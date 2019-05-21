@@ -19,15 +19,16 @@ public class MainHomeWork2 {
         show(array);
         array = remove(array, array[2]);
         show(array);
-        Integer[] array0 = new Integer[100000];
+        Integer[] array0 = new Integer[50000];
         for (int i = 0; i < array0.length; i++) {
             array0[i] = random.nextInt(51);
 
         }
-        Integer[] array1 = array0;
-        Integer[] array2 = array0;
-        Integer[] array3 = array0;
+        Integer[] array1 =  Arrays.copyOf(array0, array0.length - 1);;
+        Integer[] array2 =  Arrays.copyOf(array0, array0.length - 1);;
+        Integer[] array3 =  Arrays.copyOf(array0, array0.length - 1);;
         long millis1 = System.currentTimeMillis();
+
         sortBubble(array1);
         long millis2 = System.currentTimeMillis();
         long during = millis2 - millis1;
