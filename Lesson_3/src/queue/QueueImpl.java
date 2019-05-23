@@ -71,4 +71,12 @@ public class QueueImpl<E> implements Queue<E> {
     public int getSize() {
         return size;
     }
+
+    public E[] getData() {
+        return data;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 }

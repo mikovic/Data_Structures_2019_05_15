@@ -7,6 +7,12 @@ public class PriorityQueue<E extends Object & Comparable<? super E>> extends Que
     public PriorityQueue(int maxSize) {
         super((E[]) new Object[maxSize]);
     }
+    public PriorityQueue(E[] data) {
+        super(data);
+
+    }
+
+
 
     @Override
     public void insert(E value) {
@@ -38,4 +44,5 @@ public class PriorityQueue<E extends Object & Comparable<? super E>> extends Que
     public E peek() {
         return data[size - 1];
     }
+
 }

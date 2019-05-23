@@ -14,9 +14,14 @@ public class ArrayImpl<E extends Object & Comparable<? super E>> implements Arra
     }
 
     @SuppressWarnings("unchecked")
+    public ArrayImpl(E[] data) {
+        this.data = (E[]) data;
+
+    }
     public ArrayImpl(int initialCapacity) {
         this.data = (E[]) new Object[initialCapacity];
     }
+
 
     @Override//O(N)
     public void add(E value) {
@@ -147,5 +152,13 @@ public class ArrayImpl<E extends Object & Comparable<? super E>> implements Arra
 //        sb.append("]");
 //
 //        return sb.toString();
+    }
+
+    public E[] getData() {
+        return data;
+    }
+
+    public void setCurrentSize(int currentSize) {
+        this.currentSize = currentSize;
     }
 }
