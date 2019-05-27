@@ -8,8 +8,8 @@ public class QueueImpl<E> implements Queue<E> {
     protected E[] data;
     protected int size;
 
-    private int front;
-    private int rear;
+    protected int front;
+    protected int rear;
 
     @SuppressWarnings("unchecked")
     public QueueImpl(int maxSize) {
