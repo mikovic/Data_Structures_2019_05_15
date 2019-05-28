@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 public class LinkedQueueImpl<E> implements Queue<E>,Iterable<E> {
 
-    private TwoSideLinkedList<E> data;
+    private TwoSideLinkedListImpl<E> data;
 
     public LinkedQueueImpl() {
         this.data = new TwoSideLinkedListImpl<>();
@@ -44,6 +44,6 @@ public class LinkedQueueImpl<E> implements Queue<E>,Iterable<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return data.iterator();
     }
 }

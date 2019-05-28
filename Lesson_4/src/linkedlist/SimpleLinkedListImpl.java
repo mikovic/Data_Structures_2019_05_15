@@ -1,6 +1,59 @@
 package linkedlist;
 
-public class SimpleLinkedListImpl<E> implements LinkedList<E> {
+
+
+import java.util.Iterator;
+
+public class SimpleLinkedListImpl<E> implements LinkedList<E>, Iterable<E> {
+
+    protected Entry<E> firstElement;//002
+    protected Entry<E> currentElement;
+
+    protected int size;
+
+    @Override
+    public Iterator<E> iterator() {
+        return new MyIterator<E>();
+
+    }
+    private class MyIterator<E> implements Iterator<E>{
+        public MyIterator() {
+            currentElement = firstElement;
+        }
+
+        @Override
+        public boolean hasNext() {
+            boolean flag = true;
+            if (currentElement == null) {
+                flag = false;
+                currentElement = firstElement;
+
+            }
+            return flag;
+        }
+
+        @Override
+        public E next() {
+            SimpleLinkedListImpl.Entry<E> element = null;
+            if (hasNext()) {
+                element = (Entry<E>) currentElement;
+                currentElement = currentElement.next;
+
+            }
+            return element.value;
+        }
+
+        @Override
+        public void remove() {
+            if (!isEmpty()) {
+                firstElement = firstElement.next;
+                currentElement = firstElement;
+                size--;
+            }
+
+        }
+    }
+
 
     public static class Entry<E> {
         public final E value;
@@ -12,14 +65,13 @@ public class SimpleLinkedListImpl<E> implements LinkedList<E> {
     }
 
 
-    protected Entry<E> firstElement;//002
-    protected int size;
 
     @Override//O(1)
     public void insertFirst(E value) {
         Entry<E> entry = new Entry<>(value);//003
         entry.next = firstElement;
         firstElement = entry;
+        currentElement = entry;
         size++;
     }
 
