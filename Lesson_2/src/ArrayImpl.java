@@ -1,6 +1,12 @@
+package src;
+
+
+
+
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 
 public class ArrayImpl<E extends Object & Comparable<? super E>> implements Array<E> {
 

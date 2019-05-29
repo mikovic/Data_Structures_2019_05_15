@@ -1,3 +1,4 @@
+package src;
 public interface Array<E> {
 
     void add(E value);
