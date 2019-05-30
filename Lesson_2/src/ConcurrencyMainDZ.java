@@ -1,6 +1,7 @@
 package src;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
@@ -25,11 +26,11 @@ public class ConcurrencyMainDZ {
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);
 
-        List<Runnable> tasks = List.of(
-                measureTime(arr1::sortBubble, "Sort Bubble"),
-                measureTime(arr2::sortSelect, "Sort Select"),
-                measureTime(arr3::sortInsert, "Sort Insert")
-        );
+        List<Runnable> tasks = new ArrayList<>();
+        tasks.add(measureTime(arr1::sortBubble, "Sort Bubble"));
+        tasks.add( measureTime(arr2::sortSelect, "Sort Select"));
+        tasks.add(measureTime(arr3::sortInsert, "Sort Insert"));
+
 
 //        tasks.forEach(executorService::execute);
 
