@@ -1,8 +1,10 @@
+import java.util.Iterator;
 import java.util.Stack;
 
 public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
 
     private Node<E> root;
+
 
     @Override
     public boolean add(E value) {
@@ -15,7 +17,9 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
         if (nodeAndPrevious.current != null) {
             return false;//Found duplicate
         }
-
+        if (nodeAndPrevious.previous.level == 5) {
+            return false;
+        }
         Node<E> newValue = new Node<>(value);
         Node<E> parent = nodeAndPrevious.previous;
 
@@ -40,11 +44,9 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
 
         if (removedNode.isLeaf()) {
             removeLeaf(removedNode, parent);
-        }
-        else if (hasOnlySingleChildNode(removedNode)) {
+        } else if (hasOnlySingleChildNode(removedNode)) {
             removeNodeWithSingleChild(removedNode, parent);
-        }
-        else {
+        } else {
             removeCommonNode(removedNode, parent);
         }
 
@@ -55,11 +57,9 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
         Node<E> successor = getSuccessor(removedNode);
         if (removedNode == root) {
             root = successor;
-        }
-        else if (parent.getLeftChild() == removedNode) {
+        } else if (parent.getLeftChild() == removedNode) {
             parent.setLeftChild(successor);
-        }
-        else {
+        } else {
             parent.setRightChild(successor);
         }
 
@@ -92,11 +92,9 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
 
         if (removedNode == root) {
             root = childNode;
-        }
-        else if (parent.getLeftChild() == removedNode) {
+        } else if (parent.getLeftChild() == removedNode) {
             parent.setLeftChild(childNode);
-        }
-        else {
+        } else {
             parent.setRightChild(childNode);
         }
     }
@@ -108,11 +106,9 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
     private void removeLeaf(Node<E> removedNode, Node<E> parent) {
         if (removedNode == root) {
             root = null;
-        }
-        else if (parent.getLeftChild() == removedNode) {
+        } else if (parent.getLeftChild() == removedNode) {
             parent.setLeftChild(null);
-        }
-        else {
+        } else {
             parent.setRightChild(null);
         }
     }
@@ -126,9 +122,11 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
     private NodeAndPrevious doFind(E value) {
         Node<E> previous = null;
         Node<E> current = root;
+        int level = 0;
 
         while (current != null) {
             if (current.getValue().equals(value)) {
+
                 return new NodeAndPrevious(current, previous);
             }
 
@@ -138,6 +136,8 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
             } else {
                 current = current.getRightChild();
             }
+            level++;
+            previous.setLevel(level);
         }
 
         return new NodeAndPrevious(null, previous);
@@ -242,13 +242,33 @@ public class TreeImpl<E extends Comparable<? super E>> implements Tree<E> {
         inOrder(node.getRightChild());
     }
 
+
+
     private class NodeAndPrevious {
         Node<E> current;
         Node<E> previous;
 
+
+
         public NodeAndPrevious(Node<E> current, Node<E> previous) {
             this.current = current;
             this.previous = previous;
+
         }
+    }
+
+    public static boolean isBalanced(Node node) {
+        return (node == null) ||
+                isBalanced(node.leftChild) &&
+                        isBalanced(node.rightChild) &&
+                        Math.abs(height(node.leftChild) - height(node.rightChild)) <= 1;
+    }
+
+    private static int height(Node node) {
+        return node == null ? 0 : 1 + Math.max(height(node.leftChild), height(node.rightChild));
+    }
+
+    public Node<E> getRoot() {
+        return root;
     }
 }
