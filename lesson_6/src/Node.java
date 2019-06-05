@@ -1,11 +1,15 @@
 import java.util.Objects;
 
+import java.util.Objects;
+
 public class Node<T extends Comparable<? super T>> {
 
     private final T value;
 
     private Node<T> leftChild;
     private Node<T> rightChild;
+
+    private int level;
 
     public Node(T value) {
         this.value = value;
@@ -53,6 +57,14 @@ public class Node<T extends Comparable<? super T>> {
         return "Node{" +
                 "value=" + value +
                 '}';
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public boolean isLeaf() {
