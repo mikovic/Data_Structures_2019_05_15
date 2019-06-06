@@ -4,11 +4,13 @@ public class Graph {
 
     private final List<Vertex> vertexList = new ArrayList<>();
     private boolean[][] adjMat;
+    private double[][] adjDist;
 
     private int size;
 
     public Graph(int maxVertexCount) {
         this.adjMat = new boolean[maxVertexCount][maxVertexCount];
+        this.adjDist = new double[maxVertexCount][maxVertexCount];
     }
 
     public void addVertex(String label) {
@@ -26,6 +28,7 @@ public class Graph {
 
     /**
      * The same as {@link #addEdge(String, String)}
+     *
      * @param start
      * @param second
      * @param others
@@ -70,8 +73,10 @@ public class Graph {
             System.out.println();
         }
     }
+
     /**
      * англ. breadth-first search, BFS
+     *
      * @param startLabel
      */
     public void bfs(String startLabel) {
@@ -85,12 +90,11 @@ public class Graph {
         Vertex vertex = vertexList.get(startIndex);
         visitVertex(vertex, queue);
 
-        while ( !queue.isEmpty() ) {
+        while (!queue.isEmpty()) {
             vertex = getNearUnvisitedVertex(queue.peek());
             if (vertex != null) {
                 visitVertex(vertex, queue);
-            }
-            else {
+            } else {
                 queue.remove();
             }
         }
@@ -101,6 +105,7 @@ public class Graph {
 
     /**
      * англ. Depth-first search, DFS
+     *
      * @param startLabel
      */
     public void dfs(String startLabel) {
@@ -114,12 +119,11 @@ public class Graph {
         Vertex vertex = vertexList.get(startIndex);
         visitVertex(vertex, stack);
 
-        while ( !stack.isEmpty() ) {
+        while (!stack.isEmpty()) {
             vertex = getNearUnvisitedVertex(stack.peek());
             if (vertex != null) {
                 visitVertex(vertex, stack);
-            }
-            else {
+            } else {
                 stack.pop();
             }
         }
@@ -147,7 +151,7 @@ public class Graph {
     }
 
     private void visitVertex(Vertex vertex, Stack<Vertex> stack) {
-        displayVertex(vertex);
+
         stack.push(vertex);
         vertex.setVisited();
     }
@@ -162,4 +166,55 @@ public class Graph {
         System.out.println(vertex);
     }
 
+
+    public void addEdge(String start, String finish, double distance) {
+        int startIndex = indexOf(start);
+        int finishIndex = indexOf(finish);
+
+        if (startIndex == -1 || finishIndex == -1) {
+            throw new IllegalArgumentException("Invalid label for vertex");
+        }
+
+        adjMat[startIndex][finishIndex] = true;
+        adjMat[finishIndex][startIndex] = true;
+        adjDist[startIndex][finishIndex] = distance;
+        adjDist[finishIndex][startIndex] = distance;
+
+    }
+
+
+
+    public void bfsDistance(String startLabel, String finishLabel) {
+        int startIndex = indexOf(startLabel);
+        if (startIndex == -1) {
+            throw new IllegalArgumentException("Invalid startLabel: " + startLabel);
+        }
+
+        Queue<Vertex> queue = new LinkedList<>();
+
+        Vertex vertex = vertexList.get(startIndex);
+        visitVertex(vertex, queue);
+
+        while (!queue.isEmpty()) {
+            vertex = getNearUnvisitedVertex(queue.peek());
+            if (vertex != null) {
+                int vertexIndex = indexOf(vertex.getLabel());
+                Vertex vertexPrevios = queue.peek();
+                startIndex = indexOf(vertexPrevios.getLabel());
+                double edge = adjDist[startIndex][vertexIndex];
+                double distance = vertexPrevios.getMinDistance() + edge;
+                vertex.setMintDistance(distance);
+                visitVertex(vertex, queue);
+            } else {
+                Vertex vertex1 = queue.remove();
+                if(vertex1.getLabel().equals(finishLabel)){
+                    System.out.println("Минимальное расстояние: "+vertex1.getMinDistance());
+                    break;
+                }
+            }
+        }
+
+        resetVertexState();
+
+    }
 }

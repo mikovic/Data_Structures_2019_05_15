@@ -4,6 +4,7 @@ public class Vertex {
 
     private final String label;
     private boolean visited;
+    private double minDistance = 0;
 
     public Vertex(String label) {
         this.label = label;
@@ -43,5 +44,25 @@ public class Vertex {
 
     public void resetState() {
         visited = false;
+    }
+
+
+    public double getMinDistance() {
+        return minDistance;
+    }
+
+    public boolean setMintDistance(double distance) {
+        boolean flag = false;
+       if (minDistance == 0 ){
+           minDistance = distance;
+           flag = true;
+
+       }else {
+           if(minDistance > distance){
+               minDistance = distance;
+               flag = true;
+           }
+       }
+       return flag;
     }
 }
